@@ -22,6 +22,45 @@
 .App-link {
   color: #61dafb;
 }
+.pinkColor {
+  color: "#ff1493";
+} 
+.paddingbottom {
+  padding-bottom: 18px
+}
+
+.v1 {
+  border-left: 2px solid #7a7a7a;
+  border-radius: 2px
+}
+.preventOverflow {
+  overflow-x: hidden
+}
+
+.scrollable {
+  overflow-y: scroll; 
+  height:300px;
+  overflow-x: hidden;
+  overflow-wrap: break-word;
+}
+
+.paddingleft {
+  padding-left: 18px
+}
+.docs {
+  width: 700
+}
+.centered {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: justify;
+}
+
+.pink {
+  color: pink   
+}
 
 @keyframes App-logo-spin {
   from {
