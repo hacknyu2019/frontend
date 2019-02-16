@@ -12,8 +12,15 @@ import { Spinner, Button, ButtonGroup, Collapse,
   DropdownToggle,
   DropdownMenu,
   DropdownItem } from 'reactstrap';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import {blue500, red500, greenA200} from 'material-ui/styles/colors';
+import FontIcon from 'material-ui/FontIcon';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import{FaFilePdf} from "react-icons/fa";
+
+
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 const baseStyle = {
@@ -50,10 +57,12 @@ export default class App extends Component {
   state = { 
     numPages: null,
     pageNumber: 1,
-    fileUploaded: true,
+    fileUploaded: false,
     loading: false,
     content: ["YOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSO"],
-    content2: ["YO ITS ME WITH SECOND CONETNE"]
+    content2: ["YO ITS ME WITH SECOND CONETNE"],
+    filesPreview:[],
+    preview: [],
     };
 
   onDocumentLoadSuccess = ({ numPages }) => {
@@ -129,6 +138,23 @@ onDrop = (acceptedFiles, rejectedFiles) => {
         alert("Yo wtf? ");
         return;
     }
+    var filesPreview=[];
+    this.state.filesPreview.push(acceptedFiles)
+    for(var i in this.state.filesPreview[0]){
+      filesPreview.push(<div key={i}>
+        <FaFilePdf />  
+        {this.state.filesPreview[0][i].name}
+        {/* <MuiThemeProvider>
+        <a href="#"><FontIcon
+          className="material-icons customstyle"
+          color={blue500}
+          styles={{ top:10,}}
+        ></FontIcon></a>
+        </MuiThemeProvider> */}
+        </div>
+      )
+    }
+    this.setState({preview: filesPreview})
     var formData = new FormData();
     formData.append('file', acceptedFiles[0]);
 
@@ -136,9 +162,9 @@ onDrop = (acceptedFiles, rejectedFiles) => {
     method: 'POST',
     body: formData
     }).then(res => {
-      this.setState({fileUploaded: true, loading: false})
+      //this.setState({fileUploaded: true, loading: false})
     })
-    this.setState({loading: true})
+    //this.setState({loading: true})
 
   }
 
@@ -169,11 +195,13 @@ onDrop = (acceptedFiles, rejectedFiles) => {
           </Collapse>
     </Navbar>
     </div>
-          )   
+    )   
   }
 whenFileNotUploaded = () => {
     return (
         <div className="centered">
+                <div align="center">
+
             <Dropzone onDrop={this.onDrop}>
             
         {({getRootProps, getInputProps, isDragActive, isDragReject}) => {
@@ -195,10 +223,13 @@ whenFileNotUploaded = () => {
           )
         }}
       </Dropzone>
+      </div>
       <br></br><br></br>
-      <p align="center"> Drag your .pdf files here!<br></br> Or open from </p>
-
-
+      <p align="center"> Drag your .pdf files here!<br></br> <br></br>Or open from: </p>
+      {this.state.preview.length > 0 && <div className="borderbox" align="center">
+      {this.state.preview}
+      </div>}
+      
         </div>
     )
 }

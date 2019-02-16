@@ -58,6 +58,13 @@
   text-align: justify;
 }
 
+.borderbox {
+  width:800px;
+  border: 2px dotted gray;
+  padding: 25px;
+  margin: 25px;
+}
+
 .pink {
   color: pink   
 }
