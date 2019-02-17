@@ -10,7 +10,7 @@ import { Spinner, Button, ButtonGroup, Collapse,
   Tooltip } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import{FaFilePdf, FaSearchengin} from "react-icons/fa";
+import { FaFilePdf, FaSearchengin} from "react-icons/fa";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 const baseStyle = {
@@ -56,7 +56,8 @@ export default class App extends Component {
     uniqueId: '',
     tooltipOpen: false,
     miniLoader: false,
-    };
+    uploadedLink: 'example2.pdf',
+  };
 
   componentDidMount = () => {
     var tempData = ["Lecture 1: Machine Learning", "Lecture 2: Artifical Intelligence"]
@@ -92,7 +93,7 @@ export default class App extends Component {
 
 fetchData = (nextPage) => {
   
-  var pgNum;
+   var pgNum;
     if (nextPage) {
       pgNum = this.state.pageNumber + 1;
     } else {
@@ -170,7 +171,7 @@ whenFileUploaded = () => {
             <div>
             <Document
                 className="docs"
-                file="example2.pdf"
+                file={this.state.uploadedLink}
                 onLoadSuccess={this.onDocumentLoadSuccess}
             >
                 <Page pageNumber={pageNumber}  />
@@ -200,9 +201,9 @@ showContent1= (data) => {
     return(<Spinner color="primary" />)
   }
   return(
-    data.map(d => {
+    data.map((d, i) => {
       return (
-        <div className="smallfont">
+        <div key={i} className="smallfont">
           <a href={d.url} target="_blank">{d.title}</a>
           <ul>
             <li>{d.text}</li>
@@ -218,14 +219,14 @@ showContent2 = (data) => {
     return(<Spinner color="primary" />)
   }
   return(
-    data.map(d => {
+    data.map((d, i) => {
       return (
-        <div className="smallfont">
+        <div key={i} className="smallfont">
           <a href={d.url} target="_blank">{d.title}</a>
           <ul>
-            <li>{d.text.length > 0 && d.text[0]}</li>
-            <li>{d.text.length > 1 && d.text[1]}</li>
-            <li>{d.text.length > 2 && d.text[2]}</li>
+            {d.text.length > 1 && <li> {d.text[0]} </li>}
+            {d.text.length > 1 && <li> {d.text[1]} </li>}
+            {d.text.length > 1 && <li> {d.text[2]} </li>}
           </ul>
         </div>
       )
@@ -237,38 +238,37 @@ onDrop = (acceptedFiles, rejectedFiles) => {
         alert("Yo wtf? ");
         return;
     }
-    var filesPreview=[];
-    this.state.filesPreview.push(acceptedFiles)
-    for(var i in this.state.filesPreview[0]){
-      filesPreview.push(<div key={i}>
-        <FaFilePdf />  
-        {this.state.filesPreview[0][i].name}
-        </div>
-      )
-    }
-    this.setState({preview: filesPreview})
-    var formData = new FormData();
-    formData.append('file', acceptedFiles[0]);
+      var filesPreview=[];
+      this.state.filesPreview.push(acceptedFiles)
+      for(var i in this.state.filesPreview[0]){
+        filesPreview.push(<div key={i}>
+          <FaFilePdf />  
+          {this.state.filesPreview[0][i].name}
+          </div>
+        )
+      }
+      this.setState({preview: filesPreview, uploadedLink: acceptedFiles[0]})
+      var formData = new FormData();
+      formData.append('file', acceptedFiles[0]);
 
-    fetch('https://nyuhack-api-heroku.herokuapp.com/upload', {
-    method: 'POST',
-    body: formData
-    }).then(res => {
-      console.log(res.body)
-      return res.json();
-    }).then(res => {
-      console.log(res.id)
-      this.setState({fileUploaded: true, loading: false, uniqueId:res.id})
-      setTimeout(() => {
-        console.log("Check")
-        this.firstRequest(true)
-      }, 1000);
-    }).catch(err => {
-      alert("Errror")
-      //console.log(err);
-      console.log(err);
-    })
-    this.setState({loading: true})
+      fetch('https://nyuhack-api-heroku.herokuapp.com/upload', {
+      method: 'POST',
+      body: formData
+      }).then(res => {
+        console.log(res.body)
+        return res.json();
+      }).then(res => {
+        console.log(res.id)
+        this.setState({fileUploaded: true, loading: false, uniqueId:res.id})
+        setTimeout(() => {
+          this.firstRequest(true)
+        }, 1000);
+      }).catch(err => {
+        alert("Errror")
+        //console.log(err);
+        console.log(err);
+      })
+      this.setState({loading: true})
   }
 
   firstRequest = () => {
