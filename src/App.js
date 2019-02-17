@@ -89,7 +89,7 @@ export default class App extends Component {
         return;
     }
     this.fetchData(false)
-}
+  }
 
 fetchData = (nextPage) => {
   fetch(`https://nyuhack-api-heroku.herokuapp.com/process_pdf?id=${this.state.uniqueId}&page=${this.state.pageNumber-1}`, {
