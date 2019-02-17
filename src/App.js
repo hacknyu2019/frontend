@@ -62,8 +62,8 @@ export default class App extends Component {
     var mock =[];
     for (const i in tempData) {
       mock.push(
-      <div key={i}> 
-        <FaFilePdf />  
+      <div key={i}>
+        <FaFilePdf />
         <a href="/" >{tempData[i]}</a><br></br><br></br>
       </div>
       )
@@ -178,13 +178,13 @@ whenFileUploaded = () => {
             </div>
         </div>
         <div className="v1"></div>
-        <div className="col-4">
+        <div className="col-4 paddingTop">
         <div className="borderbox1">
         <h4><FaSearchengin/>  Keywords and Definitions</h4>
         <hr></hr>
         <div className="scrollable"> {this.showContent1(this.state.content[this.state.pageNumber-1])}</div>
         </div>
-        <br></br><br></br>
+        <br></br>
         <div className="borderbox1">
         <h4><FaSearchengin/>  Relevant Readings</h4>
         <hr></hr>
