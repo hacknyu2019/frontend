@@ -88,34 +88,52 @@ export default class App extends Component {
     if (this.state.pageNumber == 1) {
         return;
     }
-    this.setState(state => ({ pageNumber: state.pageNumber - 1 }));
+    this.fetchData(false)
+}
+
+fetchData = (nextPage) => {
+  fetch(`https://nyuhack-api-heroku.herokuapp.com/process_pdf?id=${this.state.uniqueId}&page=${this.state.pageNumber-1}`, {
+    method: 'GET',
+    }).then(res => {
+      return res.json()
+    }).then(res => {
+      console.log(res)
+      var temp = [];
+      var temp2 = [];
+      var pgNum;
+      if (nextPage) {
+        pgNum = this.state.pageNumber + 1;
+      } else {
+        pgNum = this.state.pageNumber - 1;
+      }
+      for (const i in res.news.results) {
+        temp.push({
+          title: res.news.results[i].title,
+          url: res.news.results[i].url,
+          text: res.news.results[i].text,
+        })
+      }
+      for (const i in res.definitions) {
+        temp2.push({
+          title: res.definitions[i].title,
+          url: res.definitions[i].url,
+          text: res.definitions[i].text,
+        })
+      }
+      this.state.content[pgNum - 1] = temp2;
+      this.state.content2[pgNum - 1] = temp;
+      this.setState({ pageNumber: pgNum });
+    }).catch(err => {
+      alert(err);
+    })
+  }
 }
   goToNextPage = () => {
       if (this.state.pageNumber == this.state.numPages) {
           return;
       }
-    fetch(`https://nyuhack-api-heroku.herokuapp.com/process_pdf?id=${this.state.uniqueId}&page=${this.state.pageNumber-1}`, {
-      method: 'GET',
-      }).then(res => {
-        return res.json()
-      }).then(res => {
-        console.log(res)
-        var temp = [];
-        var pgNum = this.state.pageNumber + 1;
-        for (const i in res.news.results) {
-          temp.push({
-            title: res.news.results[i].title,
-            url: res.news.results[i].url,
-            text: res.news.results[i].text,
-          })
-        }
-        this.state.content2[pgNum - 1] = temp;
-        this.setState({ pageNumber: pgNum });
-      })
-      .catch(err => {
-        alert(err);
-      })
-    }
+      this.fetchData(true)
+  }
 
   uploadAnother = () => { 
     this.setState(() => ({ fileUploaded: false }));
