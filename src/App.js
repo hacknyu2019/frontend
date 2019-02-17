@@ -57,7 +57,7 @@ export default class App extends Component {
   state = { 
     numPages: null,
     pageNumber: 1,
-    fileUploaded: false,
+    fileUploaded: true,
     loading: false,
     content: [],
     content2: [],
@@ -154,15 +154,17 @@ whenFileUploaded = () => {
         <div className="col-7">
             <nav>
               <div className="row" >
-              <div className="paddingleft">
+              <div className="paddingleft36">
               Lecture 1: Machine Learning
               </div>
               <div className="col-9">
+              <div className="paddingleft">
               <ButtonGroup>
                 <Button color="primary" onClick={this.goToPrevPage}>Prev</Button>
                 <div className="spacebetween"/>
                 <Button color="primary" onClick={this.goToNextPage}>Next</Button>
               </ButtonGroup>
+              </div>
               </div>
                 <div className="col-3">
                   Page {pageNumber} of {numPages}
@@ -182,13 +184,13 @@ whenFileUploaded = () => {
         <div className="v1"></div>
         <div className="col-4">
         <div className="borderbox1">
-        <h3><FaSearchengin/>  Keywords and Definitions</h3>
+        <h4><FaSearchengin/>  Keywords and Definitions</h4>
         <hr></hr>
         <div className="scrollable"> {this.showContent1(this.state.content[this.state.pageNumber-1])}</div>
         </div>
         <br></br><br></br>
         <div className="borderbox1">
-        <h3><FaSearchengin/>  Relevant Readings</h3>
+        <h4><FaSearchengin/>  Relevant Readings</h4>
         <hr></hr>
         <div className="scrollable">{this.showContent2(this.state.content2[this.state.pageNumber-1])} </div>
         </div>
@@ -304,9 +306,8 @@ onDrop = (acceptedFiles, rejectedFiles) => {
   navBar = () => {
     return(
       <div className="paddingbottom">
-    <Navbar color="primary" light expand="md" >
-          <img src="piccc.png" width="30px" ></img>
-          <NavbarBrand href="/">SQUEEZE</NavbarBrand>
+    <Navbar color="primary" dark expand="md" >
+          <a href="/" ><img src="learnwiselogo.png" width="150px" ></img></a>
           <NavbarToggler />
           <Collapse navbar>
             <Nav className="ml-auto" navbar>

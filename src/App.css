@@ -54,6 +54,10 @@
 .paddingleft {
   padding-left: 18px
 }
+
+.paddingleft36 {
+  padding-left: 36px
+}
 .docs {
   width: 700
 }
@@ -73,9 +77,11 @@
 }
 
 .borderbox1 {
-  width:600px;
+  width:550px;
   border: 2px dotted gray;
-  padding: 5px;
+  padding: 3px;
+  padding-left: 20px;
+  padding-top: 20px;
 }
 
 .pink {
