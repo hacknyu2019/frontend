@@ -11,6 +11,7 @@ import { Spinner, Button, ButtonGroup, Collapse,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
+  Tooltip,
   DropdownItem } from 'reactstrap';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {blue500, red500, greenA200} from 'material-ui/styles/colors';
@@ -34,7 +35,7 @@ const baseStyle = {
   const buttonStyle = {
       backgroundColor: '#0000FF',
       color: '#fff',
-      padding: '20px 50px',
+      padding: '20px 60px',
       textAlign: "center ",
       textDecoration: "none",
       display: "inline-block",
@@ -63,6 +64,7 @@ export default class App extends Component {
     filesPreview:[],
     preview: [],
     uniqueId: '',
+    tooltipOpen: false,
     };
 
   componentDidMount = () => {
@@ -262,13 +264,28 @@ onDrop = (acceptedFiles, rejectedFiles) => {
     }).then(res => {
       console.log(res.id)
       this.setState({fileUploaded: true, loading: false, uniqueId:res.id})
+      this.firstRequest()
+    }).catch(err => {
+      alert("Errror")
+      //console.log(err);
+      console.log(err);
+    })
+    this.setState({loading: true})
 
-      fetch(`https://nyuhack-api-heroku.herokuapp.com/process_pdf?id=${this.state.uniqueId}&page=0`, {
+    
+  }
+
+  firstRequest = () => {
+    console.log("Request here")
+    fetch(`https://nyuhack-api-heroku.herokuapp.com/process_pdf?id=${this.state.uniqueId}&page=0`, {
       method: 'GET',
       }).then(res => {
+        console.log("Got res")
+        console.log({res});
         return res.json()
       }).then(res => {
-        console.log(res)
+        console.log("JSON")
+        console.log({res})
         var temp = [];
         var temp2 = [];
         var pgNum = 1;
@@ -290,16 +307,14 @@ onDrop = (acceptedFiles, rejectedFiles) => {
         this.state.content2[pgNum - 1] = temp;
         this.setState({ pageNumber: pgNum });
       }).catch(err => {
-        alert(err);
+        console.log(err);
       })
-    }).catch(err => {
-      alert("Errror")
-      console.log(err);
-      alert(err);
-    })
-    this.setState({loading: true})
+  }
 
-    
+  toggle = () => {
+    this.setState({
+      tooltipOpen: !this.state.tooltipOpen
+    });
   }
 
   navBar = () => {
@@ -335,8 +350,8 @@ onDrop = (acceptedFiles, rejectedFiles) => {
 whenFileNotUploaded = () => {
     return (
       
-        <div className="centered row" >
-          <div align="center" className="col-6 right">
+        <div className="centered row paddingNo" >
+          <div align="center" className="col-5 paddingNo">
 
             <Dropzone onDrop={this.onDrop}>
             
@@ -353,19 +368,23 @@ whenFileNotUploaded = () => {
               {
                 isDragActive ?
                   <p className="centered">Drop files here...</p> :
-                  <div>Upload New PDF</div>
+                  <div>Upload PDF</div>
               }
               </div>
           )
         }}
       </Dropzone>
       </div>
-      
+      <div className="col-2" align="center"><div className="valign styleBold"><b>OR</b></div></div>
       {/* <div className="smallfont" align="center"> Drag your .pdf files here!</div> */}
-      <div align="center" className="buttonSty col-6"><br></br> <br></br><div classNames="centered">Open Recent PDF</div></div> <br></br>
-      {/* {this.state.preview.length > 0 && <div align="center">
+      <div id="tooltip" href="#" align="center" className="buttonSty col-5"><div className="valign" align="center">Open from Library</div></div> 
+       
+      <Tooltip className="modalstyle" autohide={false} placement="bottom" isOpen={this.state.tooltipOpen} target="tooltip" toggle={this.toggle}>
+      {this.state.preview.length > 0 && <div align="center">
       {this.state.preview}
-      </div>} */}
+      </div>}        
+      </Tooltip>
+      
       
         </div>
     )
@@ -376,7 +395,7 @@ whenFileNotUploaded = () => {
             {this.navBar()}
             {this.state.loading && <div className="centered"> <Spinner color="primary" /> </div>}
             {!this.state.loading && (this.state.fileUploaded ? this.whenFileUploaded() : this.whenFileNotUploaded() )}
-            <img src='tenor.gif' id='selector'/>
+            {!this.state.loading && <img src='tenor.gif' id='selector'/> }
         </div>
     );
   }

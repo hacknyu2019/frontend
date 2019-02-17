@@ -92,12 +92,26 @@
 .buttonSty {
   background-color: #0000FF;
       color: #fff;
-      padding: 20px 50px;
       text-align: center;
       text-decoration: none;
       display: inline-block;
       font-size: 18;
       border-radius: 40px;
+}
+.valign {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.paddingNo {
+  margin-left: 0px;
+  padding-left: 0px
+}
+
+.styleBold {
+  font-size: 20px;
+  font-weight: 200em;
 }
 
 .pink {
