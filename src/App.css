@@ -29,6 +29,10 @@
   padding-bottom: 18px
 }
 
+.smallfont {
+  font-size: 14px
+}
+
 .v1 {
   border-left: 2px solid #7a7a7a;
   border-radius: 2px
@@ -42,6 +46,9 @@
   height:300px;
   overflow-x: hidden;
   overflow-wrap: break-word;
+}
+.spacebetween {
+  padding-left: 4px
 }
 
 .paddingleft {

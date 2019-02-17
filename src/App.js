@@ -18,7 +18,7 @@ import FontIcon from 'material-ui/FontIcon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import{FaFilePdf} from "react-icons/fa";
+import{FaFilePdf, FaSearchengin} from "react-icons/fa";
 
 
 
@@ -33,7 +33,7 @@ const baseStyle = {
   };
 
   const buttonStyle = {
-      backgroundColor: '#ff1493',
+      backgroundColor: '#0000FF',
       color: '#fff',
       padding: '20px 50px',
       textAlign: "center ",
@@ -59,14 +59,29 @@ export default class App extends Component {
     pageNumber: 1,
     fileUploaded: false,
     loading: false,
-    content: ["YOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSOYOOYORDNSNCOSDCNSONCSCNSO"],
-    content2: ["YO ITS ME WITH SECOND CONETNE"],
+    content: [],
+    content2: [],
     filesPreview:[],
     preview: [],
+    uniqueId: '',
     };
 
+  componentDidMount = () => {
+    var tempData = ["Lecture 1: Machine Learning", "Lecture 2: Artifical Intelligence"]
+    var mock =[];
+    for (const i in tempData) {
+      mock.push(
+      <div key={i}> 
+        <FaFilePdf />  
+        {tempData[i]}
+      </div>
+      )
+    }
+    this.setState({preview: mock})
+  }
+
   onDocumentLoadSuccess = ({ numPages }) => {
-    this.setState({ numPages });
+    this.setState({ numPages, content2: new Array(numPages), content: new Array(numPages) });
   };
 
   goToPrevPage = () => {
@@ -78,8 +93,28 @@ export default class App extends Component {
   goToNextPage = () => {
       if (this.state.pageNumber == this.state.numPages) {
           return;
-      }    
-      this.setState(state => ({ pageNumber: state.pageNumber + 1 }));
+      }
+    fetch(`https://nyuhack-api-heroku.herokuapp.com/process_pdf?id=${this.state.uniqueId}&page=${this.state.pageNumber-1}`, {
+      method: 'GET',
+      }).then(res => {
+        return res.json()
+      }).then(res => {
+        console.log(res)
+        var temp = [];
+        var pgNum = this.state.pageNumber + 1;
+        for (const i in res.news.results) {
+          temp.push({
+            title: res.news.results[i].title,
+            url: res.news.results[i].url,
+            text: res.news.results[i].text,
+          })
+        }
+        this.state.content2[pgNum - 1] = temp;
+        this.setState({ pageNumber: pgNum });
+      })
+      .catch(err => {
+        alert(err);
+      })
     }
 
   uploadAnother = () => { 
@@ -92,14 +127,14 @@ whenFileUploaded = () => {
       <div className="row preventOverflow">
         <div className="col-6">
             <nav>
-              <div class="row" >
+              <div className="row" >
               <div className="paddingleft">
               Lecture 1: Machine Learning
               </div>
-
               <div className="col-9">
               <ButtonGroup>
                 <Button color="primary" onClick={this.goToPrevPage}>Prev</Button>
+                <div className="spacebetween"/>
                 <Button color="primary" onClick={this.goToNextPage}>Next</Button>
               </ButtonGroup>
               </div>
@@ -111,7 +146,7 @@ whenFileUploaded = () => {
             <div>
             <Document
                 className="docs"
-                file="example.pdf"
+                file="example1.pdf"
                 onLoadSuccess={this.onDocumentLoadSuccess}
             >
                 <Page pageNumber={pageNumber}  />
@@ -120,20 +155,54 @@ whenFileUploaded = () => {
         </div>
         <div className="v1"></div>
         <div className="col-5">
-        <h3>Keywords and Definitions</h3>
-        <div className="scrollable"> {this.state.content[0]}</div>
+        <h3><FaSearchengin/>  Keywords and Definitions</h3>
+        <div className="scrollable"> {this.showContent1(this.state.content[this.state.pageNumber-1])}</div>
         <br></br><br></br>
-        <h3>Relevant Readings</h3>
-        <div className="scrollable">{this.state.content2[0]} </div>
-
-        </div>  
-
+        <h3><FaSearchengin/>  Relevant Readings</h3>
+        <div className="scrollable">{this.showContent2(this.state.content2[this.state.pageNumber-1])} </div>
+        </div>
       </div>
     )
 }
+
+showContent1= (data) => {
+  if (data == null) {
+    return(<Spinner color="primary" />)
+  }
+  return(
+    data.map(d => {
+      return (
+        <div className="smallfont">
+          <a href={d.url} target="_blank">{d.title}</a>
+          <ul>
+            <li>{d.text}</li>
+          </ul>
+        </div>
+      )
+    })
+  )
+}
+
+
+
+showContent2 = (data) => {
+  if (data == null) {
+    return(<Spinner color="primary" />)
+  }
+  return(
+    data.map(d => {
+      return (
+        <div className="smallfont">
+          <a href={d.url} target="_blank">{d.title}</a>
+          <ul>
+            <li>{d.text}</li>
+          </ul>
+        </div>
+      )
+    })
+  )
+}
 onDrop = (acceptedFiles, rejectedFiles) => {
-    console.log(acceptedFiles);
-    console.log(rejectedFiles);
     if (rejectedFiles.length > 0) {
         alert("Yo wtf? ");
         return;
@@ -144,13 +213,6 @@ onDrop = (acceptedFiles, rejectedFiles) => {
       filesPreview.push(<div key={i}>
         <FaFilePdf />  
         {this.state.filesPreview[0][i].name}
-        {/* <MuiThemeProvider>
-        <a href="#"><FontIcon
-          className="material-icons customstyle"
-          color={blue500}
-          styles={{ top:10,}}
-        ></FontIcon></a>
-        </MuiThemeProvider> */}
         </div>
       )
     }
@@ -158,20 +220,27 @@ onDrop = (acceptedFiles, rejectedFiles) => {
     var formData = new FormData();
     formData.append('file', acceptedFiles[0]);
 
-    fetch('', {
+    fetch('https://nyuhack-api-heroku.herokuapp.com/upload', {
     method: 'POST',
     body: formData
     }).then(res => {
-      //this.setState({fileUploaded: true, loading: false})
+      console.log(res.body)
+      return res.json();
+    }).then(res => {
+      console.log(res.id)
+      this.setState({fileUploaded: true, loading: false, uniqueId:res.id})
+    }).catch(err => {
+      alert("Errror")
+      console.log(err);
+      alert(err);
     })
-    //this.setState({loading: true})
-
+    this.setState({loading: true})
   }
 
   navBar = () => {
     return(
       <div className="paddingbottom">
-    <Navbar color="primary" dark expand="md" >
+    <Navbar color="primary" light expand="md" >
           <NavbarBrand href="/">SQUEEZE</NavbarBrand>
           <NavbarToggler />
           <Collapse navbar>
@@ -217,15 +286,15 @@ whenFileNotUploaded = () => {
               {
                 isDragActive ?
                   <p className="centered">Drop files here...</p> :
-                  <p>Upload PDF</p>
+                  <div>Upload PDF</div>
               }
               </div>
           )
         }}
       </Dropzone>
       </div>
-      <br></br><br></br>
-      <p align="center"> Drag your .pdf files here!<br></br> <br></br>Or open from: </p>
+      
+      <div className="smallfont" align="center"> Drag your .pdf files here!</div><div align="center"><br></br> <br></br>Or open from: </div>
       {this.state.preview.length > 0 && <div className="borderbox" align="center">
       {this.state.preview}
       </div>}
