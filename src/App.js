@@ -92,7 +92,13 @@ export default class App extends Component {
   }
 
 fetchData = (nextPage) => {
-  fetch(`https://nyuhack-api-heroku.herokuapp.com/process_pdf?id=${this.state.uniqueId}&page=${this.state.pageNumber-1}`, {
+  var pgNum;
+    if (nextPage) {
+      pgNum = this.state.pageNumber + 1;
+    } else {
+      pgNum = this.state.pageNumber - 1;
+    }
+  fetch(`https://nyuhack-api-heroku.herokuapp.com/process_pdf?id=${this.state.uniqueId}&page=${pgNum - 1}`, {
     method: 'GET',
     }).then(res => {
       return res.json()
@@ -100,17 +106,13 @@ fetchData = (nextPage) => {
       console.log(res)
       var temp = [];
       var temp2 = [];
-      var pgNum;
-      if (nextPage) {
-        pgNum = this.state.pageNumber + 1;
-      } else {
-        pgNum = this.state.pageNumber - 1;
-      }
-      for (const i in res.news.results) {
+      
+      console.log(pgNum);
+      for (const i in res.news) {
         temp.push({
-          title: res.news.results[i].title,
-          url: res.news.results[i].url,
-          text: res.news.results[i].text,
+          title: res.news[i].title,
+          url: res.news[i].url,
+          text: res.news[i].text,
         })
       }
       for (const i in res.definitions) {
@@ -200,8 +202,6 @@ showContent1= (data) => {
   )
 }
 
-
-
 showContent2 = (data) => {
   if (data == null) {
     return(<Spinner color="primary" />)
@@ -212,9 +212,9 @@ showContent2 = (data) => {
         <div className="smallfont">
           <a href={d.url} target="_blank">{d.title}</a>
           <ul>
-            <li>{d.text[0]}</li>
-            <li>{d.text[1]}</li>
-            <li>{d.text[2]}</li>
+            <li>{d.text.length > 0 && d.text[0]}</li>
+            <li>{d.text.length > 1 && d.text[1]}</li>
+            <li>{d.text.length > 2 && d.text[2]}</li>
           </ul>
         </div>
       )
@@ -248,12 +248,44 @@ onDrop = (acceptedFiles, rejectedFiles) => {
     }).then(res => {
       console.log(res.id)
       this.setState({fileUploaded: true, loading: false, uniqueId:res.id})
+
+      fetch(`https://nyuhack-api-heroku.herokuapp.com/process_pdf?id=${this.state.uniqueId}&page=0`, {
+      method: 'GET',
+      }).then(res => {
+        return res.json()
+      }).then(res => {
+        console.log(res)
+        var temp = [];
+        var temp2 = [];
+        var pgNum = 1;
+        for (const i in res.news) {
+          temp.push({
+            title: res.news[i].title,
+            url: res.news[i].url,
+            text: res.news[i].text,
+          })
+        }
+        for (const i in res.definitions) {
+          temp2.push({
+            title: res.definitions[i].title,
+            url: res.definitions[i].url,
+            text: res.definitions[i].text,
+          })
+        }
+        this.state.content[pgNum - 1] = temp2;
+        this.state.content2[pgNum - 1] = temp;
+        this.setState({ pageNumber: pgNum });
+      }).catch(err => {
+        alert(err);
+      })
     }).catch(err => {
       alert("Errror")
       console.log(err);
       alert(err);
     })
     this.setState({loading: true})
+
+    
   }
 
   navBar = () => {
