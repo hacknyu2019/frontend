@@ -53,7 +53,7 @@ export default class App extends Component {
     content2: [],
     filesPreview:[],
     preview: [],
-    uniqueId: '34d31263-b255-4540-ba21-5424689580db',
+    uniqueId: '',
     tooltipOpen: false,
     miniLoader: false,
     };
@@ -258,8 +258,7 @@ onDrop = (acceptedFiles, rejectedFiles) => {
       return res.json();
     }).then(res => {
       console.log(res.id)
-      this.setState({fileUploaded: true, loading: false})
-      //, uniqueId:res.id})
+      this.setState({fileUploaded: true, loading: false, uniqueId:res.id})
       setTimeout(() => {
         console.log("Check")
         this.firstRequest(true)
