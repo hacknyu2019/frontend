@@ -267,13 +267,13 @@ onDrop = (acceptedFiles, rejectedFiles) => {
                 <NavLink href="/">Home</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/">About Us</NavLink>
+                <NavLink href="/">My Library</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/">Services</NavLink>
+                <NavLink href="/">Academia</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/">Contact Us</NavLink>
+                <NavLink href="/">Bookmarks</NavLink>
               </NavItem>
               <NavItem>
                 <Button className="pinkColor" onClick={this.uploadAnother}>Upload PDF</Button>
