@@ -127,7 +127,6 @@ fetchData = (nextPage) => {
       alert(err);
     })
   }
-}
   goToNextPage = () => {
       if (this.state.pageNumber == this.state.numPages) {
           return;
@@ -274,6 +273,9 @@ onDrop = (acceptedFiles, rejectedFiles) => {
               </NavItem>
               <NavItem>
                 <NavLink href="/">Bookmarks</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/">Community</NavLink>
               </NavItem>
               <NavItem>
                 <Button className="pinkColor" onClick={this.uploadAnother}>Upload PDF</Button>
