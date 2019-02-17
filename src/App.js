@@ -19,8 +19,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import{FaFilePdf, FaSearchengin} from "react-icons/fa";
-
-
+import Card from '@material-ui/core/Card';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 const baseStyle = {
@@ -57,7 +56,7 @@ export default class App extends Component {
   state = { 
     numPages: null,
     pageNumber: 1,
-    fileUploaded: true,
+    fileUploaded: false,
     loading: false,
     content: [],
     content2: [],
@@ -73,7 +72,7 @@ export default class App extends Component {
       mock.push(
       <div key={i}> 
         <FaFilePdf />  
-        {tempData[i]}
+        <a href="/" >{tempData[i]}</a><br></br><br></br>
       </div>
       )
     }
@@ -160,9 +159,9 @@ whenFileUploaded = () => {
               <div className="col-9">
               <div className="paddingleft">
               <ButtonGroup>
-                <Button color="primary" onClick={this.goToPrevPage}>Prev</Button>
+                <Button size="sm" color="primary" onClick={this.goToPrevPage}>Prev</Button>
                 <div className="spacebetween"/>
-                <Button color="primary" onClick={this.goToNextPage}>Next</Button>
+                <Button size="sm" color="primary" onClick={this.goToNextPage}>Next</Button>
               </ButtonGroup>
               </div>
               </div>
@@ -305,7 +304,6 @@ onDrop = (acceptedFiles, rejectedFiles) => {
 
   navBar = () => {
     return(
-      <div className="paddingbottom">
     <Navbar color="primary" dark expand="md" >
           <a href="/" ><img src="learnwiselogo.png" width="150px" ></img></a>
           <NavbarToggler />
@@ -332,13 +330,13 @@ onDrop = (acceptedFiles, rejectedFiles) => {
             </Nav>
           </Collapse>
     </Navbar>
-    </div>
     )   
   }
 whenFileNotUploaded = () => {
     return (
-        <div className="centered">
-                <div align="center">
+      
+        <div className="centered row" >
+          <div align="center" className="col-6 right">
 
             <Dropzone onDrop={this.onDrop}>
             
@@ -355,7 +353,7 @@ whenFileNotUploaded = () => {
               {
                 isDragActive ?
                   <p className="centered">Drop files here...</p> :
-                  <div>Upload PDF</div>
+                  <div>Upload New PDF</div>
               }
               </div>
           )
@@ -363,10 +361,11 @@ whenFileNotUploaded = () => {
       </Dropzone>
       </div>
       
-      <div className="smallfont" align="center"> Drag your .pdf files here!</div><div align="center"><br></br> <br></br>Or open from: </div>
-      {this.state.preview.length > 0 && <div className="borderbox" align="center">
+      {/* <div className="smallfont" align="center"> Drag your .pdf files here!</div> */}
+      <div align="center" className="buttonSty col-6"><br></br> <br></br><div classNames="centered">Open Recent PDF</div></div> <br></br>
+      {/* {this.state.preview.length > 0 && <div align="center">
       {this.state.preview}
-      </div>}
+      </div>} */}
       
         </div>
     )
@@ -377,6 +376,7 @@ whenFileNotUploaded = () => {
             {this.navBar()}
             {this.state.loading && <div className="centered"> <Spinner color="primary" /> </div>}
             {!this.state.loading && (this.state.fileUploaded ? this.whenFileUploaded() : this.whenFileNotUploaded() )}
+            <img src='tenor.gif' id='selector'/>
         </div>
     );
   }
