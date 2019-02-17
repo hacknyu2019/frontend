@@ -1,4 +1,4 @@
-# React Client for Hackathon
+# learnwise.net (React Client for Hackathon)
 
 Backend is served from [Flask REST API's](https://nyuhack-api-heroku.herokuapp.com/)
 
@@ -6,7 +6,7 @@ Readme for backend can be found [here](https://github.com/hacknyu2019/flask-back
 
 ## Deploy
 
-- Deployed to Netlify
+[![Netlify Status](https://api.netlify.com/api/v1/badges/79c0179b-03ff-4f28-9e70-2a2f254c4630/deploy-status)](https://app.netlify.com/sites/friendly-lamarr-d40add/deploys)
 
 - [Website](https://friendly-lamarr-d40add.netlify.com)
 
