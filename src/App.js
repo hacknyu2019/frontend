@@ -86,7 +86,7 @@ export default class App extends Component {
     this.setState({loading: true});
     setTimeout(() => {
       this.fetchData(false)
-    }, 2000);
+    }, 1000);
   }
 
 fetchData = (nextPage) => {
@@ -136,7 +136,7 @@ fetchData = (nextPage) => {
       this.setState({loading: true});
       setTimeout(() => {
         this.fetchData(true)
-      }, 2000);
+      }, 1000);
     }
 
   uploadAnother = () => { 
@@ -263,7 +263,7 @@ onDrop = (acceptedFiles, rejectedFiles) => {
       setTimeout(() => {
         console.log("Check")
         this.firstRequest(true)
-      }, 2000);
+      }, 1000);
     }).catch(err => {
       alert("Errror")
       //console.log(err);
