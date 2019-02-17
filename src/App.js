@@ -53,7 +53,7 @@ export default class App extends Component {
     content2: [],
     filesPreview:[],
     preview: [],
-    uniqueId: 'a41f5cd1-2fbd-4034-bc6b-1a5f219097a9',
+    uniqueId: '34d31263-b255-4540-ba21-5424689580db',
     tooltipOpen: false,
     };
 
@@ -86,7 +86,8 @@ export default class App extends Component {
     this.setState({loading: true});
     setTimeout(() => {
       this.fetchData(false)
-    }, 2000);  }
+    }, 2000);
+  }
 
 fetchData = (nextPage) => {
   
