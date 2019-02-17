@@ -23,7 +23,7 @@ const baseStyle = {
   };
 
   const buttonStyle = {
-      backgroundColor: '#0000FF',
+      backgroundColor: '#007bff',
       color: '#fff',
       padding: '20px 60px',
       textAlign: "center ",
@@ -55,6 +55,7 @@ export default class App extends Component {
     preview: [],
     uniqueId: '34d31263-b255-4540-ba21-5424689580db',
     tooltipOpen: false,
+    miniLoader: false,
     };
 
   componentDidMount = () => {
@@ -83,7 +84,7 @@ export default class App extends Component {
     if (this.state.pageNumber == 1) {
         return;
     }
-    this.setState({loading: true});
+    this.setState({miniLoader: true});
     setTimeout(() => {
       this.fetchData(false)
     }, 1000);
@@ -123,9 +124,8 @@ fetchData = (nextPage) => {
       }
       this.state.content[pgNum - 1] = temp2;
       this.state.content2[pgNum - 1] = temp;
-      this.setState({ pageNumber: pgNum, loading: false });
+      this.setState({ pageNumber: pgNum, loading: false, miniLoader: false });
     }).catch(err => {
-      //alert(err);
       this.fetchData(nextPage);
     })
   }
@@ -133,7 +133,7 @@ fetchData = (nextPage) => {
       if (this.state.pageNumber == this.state.numPages) {
           return;
       }
-      this.setState({loading: true});
+      this.setState({miniLoader: true});
       setTimeout(() => {
         this.fetchData(true)
       }, 1000);
@@ -151,7 +151,7 @@ whenFileUploaded = () => {
             <nav>
               <div className="row" >
               <div className="paddingleft36">
-              Lecture 1: Machine Learning
+              <strong>Lecture 1: Latitude and Longitude</strong>
               </div>
               <div className="col-9">
               <div className="paddingleft">
@@ -196,7 +196,7 @@ whenFileUploaded = () => {
 }
 
 showContent1= (data) => {
-  if (data == null) {
+  if (data == null || this.state.miniLoader == true) {
     return(<Spinner color="primary" />)
   }
   return(
@@ -214,7 +214,7 @@ showContent1= (data) => {
 }
 
 showContent2 = (data) => {
-  if (data == null) {
+  if (data == null || this.state.miniLoader == true) {
     return(<Spinner color="primary" />)
   }
   return(
