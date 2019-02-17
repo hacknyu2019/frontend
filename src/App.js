@@ -8,19 +8,11 @@ import { Spinner, Button, ButtonGroup, Collapse,
   Nav,
   NavItem,
   NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  Tooltip,
-  DropdownItem } from 'reactstrap';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import {blue500, red500, greenA200} from 'material-ui/styles/colors';
-import FontIcon from 'material-ui/FontIcon';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+  Tooltip } from 'reactstrap';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import{FaFilePdf, FaSearchengin} from "react-icons/fa";
-import Card from '@material-ui/core/Card';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 const baseStyle = {
@@ -63,7 +55,7 @@ export default class App extends Component {
     content2: [],
     filesPreview:[],
     preview: [],
-    uniqueId: '',
+    uniqueId: 'a41f5cd1-2fbd-4034-bc6b-1a5f219097a9',
     tooltipOpen: false,
     };
 
@@ -94,10 +86,12 @@ export default class App extends Component {
         return;
     }
     this.setState({loading: true});
-    this.fetchData(false)
-  }
+    setTimeout(() => {
+      this.fetchData(false)
+    }, 2000);  }
 
 fetchData = (nextPage) => {
+  
   var pgNum;
     if (nextPage) {
       pgNum = this.state.pageNumber + 1;
@@ -141,8 +135,10 @@ fetchData = (nextPage) => {
           return;
       }
       this.setState({loading: true});
-      this.fetchData(true)
-  }
+      setTimeout(() => {
+        this.fetchData(true)
+      }, 2000);
+    }
 
   uploadAnother = () => { 
     this.setState(() => ({ fileUploaded: false }));
@@ -263,16 +259,18 @@ onDrop = (acceptedFiles, rejectedFiles) => {
       return res.json();
     }).then(res => {
       console.log(res.id)
-      this.setState({fileUploaded: true, loading: false, uniqueId:res.id})
-      this.firstRequest()
+      this.setState({fileUploaded: true, loading: false})
+      //, uniqueId:res.id})
+      setTimeout(() => {
+        console.log("Check")
+        this.firstRequest(true)
+      }, 2000);
     }).catch(err => {
       alert("Errror")
       //console.log(err);
       console.log(err);
     })
     this.setState({loading: true})
-
-    
   }
 
   firstRequest = () => {
@@ -376,7 +374,6 @@ whenFileNotUploaded = () => {
       </Dropzone>
       </div>
       <div className="col-2" align="center"><div className="valign styleBold"><b>OR</b></div></div>
-      {/* <div className="smallfont" align="center"> Drag your .pdf files here!</div> */}
       <div id="tooltip" href="#" align="center" className="buttonSty col-5"><div className="valign" align="center">Open from Library</div></div> 
        
       <Tooltip className="modalstyle" autohide={false} placement="bottom" isOpen={this.state.tooltipOpen} target="tooltip" toggle={this.toggle}>
@@ -395,7 +392,7 @@ whenFileNotUploaded = () => {
             {this.navBar()}
             {this.state.loading && <div className="centered"> <Spinner color="primary" /> </div>}
             {!this.state.loading && (this.state.fileUploaded ? this.whenFileUploaded() : this.whenFileNotUploaded() )}
-            {!this.state.loading && <img src='tenor.gif' id='selector'/> }
+            {!this.state.loading && !this.state.fileUploaded && <img src='tenor.gif' id='selector'/> }
         </div>
     );
   }

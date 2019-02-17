@@ -76,14 +76,14 @@
 
 .borderbox {
   width:500px;
-  border: 2px dotted gray;
+  border: 2px solid gray;
   padding: 25px;
   margin: 25px;
 }
 
 .borderbox1 {
   width:550px;
-  border: 2px dotted gray;
+  border: 2px solid gray;
   padding: 3px;
   padding-left: 20px;
   padding-top: 20px;
