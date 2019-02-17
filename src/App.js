@@ -212,7 +212,9 @@ showContent2 = (data) => {
         <div className="smallfont">
           <a href={d.url} target="_blank">{d.title}</a>
           <ul>
-            <li>{d.text}</li>
+            <li>{d.text[0]}</li>
+            <li>{d.text[1]}</li>
+            <li>{d.text[2]}</li>
           </ul>
         </div>
       )
@@ -258,6 +260,7 @@ onDrop = (acceptedFiles, rejectedFiles) => {
     return(
       <div className="paddingbottom">
     <Navbar color="primary" light expand="md" >
+          <img src="piccc.png" width="30px" ></img>
           <NavbarBrand href="/">SQUEEZE</NavbarBrand>
           <NavbarToggler />
           <Collapse navbar>
