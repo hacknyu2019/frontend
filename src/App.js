@@ -163,7 +163,7 @@ whenFileUploaded = () => {
             <div>
             <Document
                 className="docs"
-                file="example1.pdf"
+                file="example2.pdf"
                 onLoadSuccess={this.onDocumentLoadSuccess}
             >
                 <Page pageNumber={pageNumber}  />
