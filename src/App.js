@@ -4,12 +4,10 @@ import Dropzone from 'react-dropzone'
 import { Spinner, Button, ButtonGroup, Collapse,
   Navbar,
   NavbarToggler,
-  NavbarBrand,
   Nav,
   NavItem,
   NavLink,
   Tooltip } from 'reactstrap';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import{FaFilePdf, FaSearchengin} from "react-icons/fa";
