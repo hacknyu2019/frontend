@@ -142,7 +142,7 @@ whenFileUploaded = () => {
     const { pageNumber, numPages } = this.state;
     return (
       <div className="row preventOverflow">
-        <div className="col-6">
+        <div className="col-7">
             <nav>
               <div className="row" >
               <div className="paddingleft">
@@ -171,7 +171,7 @@ whenFileUploaded = () => {
             </div>
         </div>
         <div className="v1"></div>
-        <div className="col-5">
+        <div className="col-4">
         <h3><FaSearchengin/>  Keywords and Definitions</h3>
         <div className="scrollable"> {this.showContent1(this.state.content[this.state.pageNumber-1])}</div>
         <br></br><br></br>
