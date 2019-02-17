@@ -81,6 +81,10 @@ export default class App extends Component {
   }
 
   onDocumentLoadSuccess = ({ numPages }) => {
+    if (this.state.content2.length > 0 && this.state.content.length > 0) {
+      this.setState({ numPages});
+      return;
+    }
     this.setState({ numPages, content2: new Array(numPages), content: new Array(numPages) });
   };
 
@@ -88,6 +92,7 @@ export default class App extends Component {
     if (this.state.pageNumber == 1) {
         return;
     }
+    this.setState({loading: true});
     this.fetchData(false)
   }
 
@@ -98,7 +103,7 @@ fetchData = (nextPage) => {
     } else {
       pgNum = this.state.pageNumber - 1;
     }
-  fetch(`https://nyuhack-api-heroku.herokuapp.com/process_pdf?id=${this.state.uniqueId}&page=${pgNum - 1}`, {
+  fetch(`https://nyuhack-api-heroku.herokuapp.com/process_pdf?id=${this.state.uniqueId}&page=${pgNum-1}`, {
     method: 'GET',
     }).then(res => {
       return res.json()
@@ -124,7 +129,7 @@ fetchData = (nextPage) => {
       }
       this.state.content[pgNum - 1] = temp2;
       this.state.content2[pgNum - 1] = temp;
-      this.setState({ pageNumber: pgNum });
+      this.setState({ pageNumber: pgNum, loading: false });
     }).catch(err => {
       alert(err);
     })
@@ -133,6 +138,7 @@ fetchData = (nextPage) => {
       if (this.state.pageNumber == this.state.numPages) {
           return;
       }
+      this.setState({loading: true});
       this.fetchData(true)
   }
 
