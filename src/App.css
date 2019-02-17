@@ -72,6 +72,12 @@
   margin: 25px;
 }
 
+.borderbox1 {
+  width:600px;
+  border: 2px dotted gray;
+  padding: 5px;
+}
+
 .pink {
   color: pink   
 }

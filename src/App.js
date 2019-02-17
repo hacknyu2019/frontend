@@ -181,11 +181,17 @@ whenFileUploaded = () => {
         </div>
         <div className="v1"></div>
         <div className="col-4">
+        <div className="borderbox1">
         <h3><FaSearchengin/>  Keywords and Definitions</h3>
+        <hr></hr>
         <div className="scrollable"> {this.showContent1(this.state.content[this.state.pageNumber-1])}</div>
+        </div>
         <br></br><br></br>
+        <div className="borderbox1">
         <h3><FaSearchengin/>  Relevant Readings</h3>
+        <hr></hr>
         <div className="scrollable">{this.showContent2(this.state.content2[this.state.pageNumber-1])} </div>
+        </div>
         </div>
       </div>
     )
