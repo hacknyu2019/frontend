@@ -131,7 +131,8 @@ fetchData = (nextPage) => {
       this.state.content2[pgNum - 1] = temp;
       this.setState({ pageNumber: pgNum, loading: false });
     }).catch(err => {
-      alert(err);
+      //alert(err);
+      this.fetchData(nextPage);
     })
   }
   goToNextPage = () => {
