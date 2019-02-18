@@ -152,7 +152,7 @@ whenFileUploaded = () => {
             <nav>
               <div className="row" >
               <div className="paddingleft36">
-              <strong>Lecture 1: Latitude and Longitude</strong>
+              <strong>Reading Lecture File: {this.state.uploadedLink.name}</strong>
               </div>
               <div className="col-9">
               <div className="paddingleft">
